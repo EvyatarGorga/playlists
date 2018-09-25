@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <meta charset="utf-8">
+    <title>Playlist Project</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway+Dots" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+
+  <body ng-app="app" ng-controller="myApp">
+    <header>
+      <div class="headerContainer">
+        <div class="createPlaylist">
+          <span id="plusPlaylist" ng-click="createPlaylist(playlist)">+</span> <span id="plusTitle" ng-click="createPlaylist(playlist)">Create new playlist</span>
+        </div>
+        <div class="searchConainer">
+          <input type="search" placeholder="Search playlist" ng-model="search">
+        </div>
+      </div>
+    </header>
+    <div class="logoConatiner">
+      <img src="images/logo.jpg">
+      <span id="logoTitle">BarCloud</span>
+    </div>
+    <span id="welcomeBar">Welcome to the playlist management interface, you can add, edit, update and delete song lists. good luck</span>
+    <span id="deleteAll" ng-click="deleteAll()">delete all playlists</span>
+    <main>
+      <div class="mainConatiner">
+        <div class="object" ng-repeat="playlist in playlists | filter: search track by $index">
+          <div class="playlistContainer">
+            <span id="titleObj">{{playlist.name}}</span>
+            <div class="playlistObject" style="background-image: url({{playlist.image}});">
+              <span id="playObject" ng-click="getPlaylist(playlist, $event)">▶</span>
+              <span ng-click="delete(playlist)" id="deleteObject">X</span>
+              <span id="editObject" ng-click="edit(playlist)">✎</span>
+              <img src="images/music-record.png" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Create   -->
+    <form class="createPlaylistForm">
+      <div class="formContainer">
+        <div class="formDetails">
+          <div class="closeModal">
+            <span>Close</span>
+            <span>X</span>
+          </div>
+          <h3>Create new playlist</h3>
+          <label>
+            <span>Enter Playlist name: {{playlistName}}</span>
+            <input id="resetVal" type="text" name="name" ng-model="playlistName">
+
+          </label>
+          <label>
+            <span>Enter Image URL: </span>
+            <input id="resetVal" type="text" name="image" ng-model="imgUrl">
+          </label>
+          <div class="imagePlayer" style="background-image: url('{{imgUrl}}')">
+          </div>
+          <label>
+            <input type="hidden" ng-model="playlist.id" />
+            <input id="moveToSong" type="text" value="Create Playlist">
+          </label>
+          <span id="nextLevel">you will be automatically moved to the songs list</span>
+        </div>
+      </div>
+    </form>
+    <form class="createSongsList">
+      <div class="formContainer">
+        <div class="formDetails">
+          <div class="closeModal">
+            <span>Close</span>
+            <span>X</span>
+          </div>
+          <h3>Insert songs (links)</h3>
+          <span id="addMoreSong" ng-click="BuildSongColum()">+</span>
+          <label>
+            <span>Enter Song name:</span>
+            <input id="resetVal"  type="text" ng-model="songName">
+            <span>Enter Song URL:</span>
+            <input id="resetVal" type="text" ng-model="songUrl" ng-model="files">
+            <hr>
+          </label>
+          <div class="buildShow">
+
+          </div>
+          <span id="errorMsg">There are missing details, CHECK!</span>
+          <label>
+            <input type="submit" value="Start listening" ng-click="savePlaylist(playlistName, imgUrl, songName, songUrl)">
+          </label>
+          <span id="backPlaylist">Back to Playlist details</span>
+          <span id="nextLevel">you will be automatically moved to the home page</span>
+        </div>
+      </div>
+    </form>
+
+    <!-- Edit Working GOOD!  -->
+    <form class="editPlaylistForm">
+      <div class="formContainer">
+        <div class="formDetails">
+          <div class="closeModal">
+            <span>Close</span>
+            <span>X</span>
+          </div>
+          <h3>EDIT playlist</h3>
+          <label>
+            <span>Enter Playlist name: </span>
+            <input id="playlistNameID" type="text" name="name" value="{{dataPlaylist.name}}">
+          </label>
+          <label>
+            <span>Enter Image URL:</span>
+            <input id="imageUrlID" type="text" name="image" value="{{dataPlaylist.image}}">
+          </label>
+          <label>
+            <input id="moveToSong" type="text" value="Move to Songs" ng-click="moveToSong()">
+          </label>
+          <span id="nextLevel">you will be automatically moved to the songs list</span>
+        </div>
+      </div>
+    </form>
+
+    <form class="editSongsList">
+      <div class="formContainer">
+        <div class="formDetails">
+          <div class="closeModal">
+            <span>Close</span>
+            <span>X</span>
+          </div>
+          <h3>Insert songs (links)</h3>
+          <span id="addMoreSong" ng-click="BuildSongColum()">+</span>
+          <label ng-repeat="p in dataPlaylist.songs">
+            <span id="deleteSong">Delete this song</span>
+            <span>Enter Song name:</span>
+            <input id="songNameID" type="text" value="{{p.nameSong}}">
+            <span>Enter Song URL:</span>
+            <input id="songsUrlID" type="text" value="{{p.url}}">
+            <hr>
+          </label>
+          <div class="buildShow">
+
+          </div>
+          <label>
+            <input id="submitEdit" type="submit" value="Start listening" ng-click="saveEdit()">
+          </label>
+          <span id="backPlaylist">Back to Playlist details</span>
+          <span id="nextLevel">you will be automatically moved to the home page</span>
+        </div>
+      </div>
+    </form>
+
+    <span id="showPlayer">Show Player</span>
+
+    <div class="player">
+      <div class="player">
+        <span id="hidePlayer">Hide Player</span>
+        <div class="playerDetails">
+          <div class="imagePlayer" style="background-image: url('{{player.image}}')"></div>
+          <audio src="" controls id="audioPlayer">
+              Sorry, your browser doesn't support html5!
+          </audio>
+          <ul id="playlist">
+            <span id="titlePlaylist">You are now listening to: {{player.name}}</span>
+              <li  class="current-song" ng-repeat="p in player.songs"><a ng-click="audioPlayer($event)" href="{{p.url}}">{{p.nameSong}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+  <script src="js/angular.min.js"></script>
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/events.js"></script>
+  <script src="js/jquery.arctext.js"></script>
+  <script src="js/audioPlayer.js"></script>
+  <script>
+    // audioPlayer();
+  </script>
+</html>

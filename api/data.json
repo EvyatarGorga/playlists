@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "gucci-gang",
+    "image": "gucci.png",
+    "songs": [
+      {
+        "name": "hola",
+        "url": "nnnnn"
+      },
+      {
+        "name": "haha",
+        "url": "kklkl"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "fdsfdsf",
+    "image": "gucci.png",
+    "songs": [
+      {
+        "name": "hola",
+        "url": "nnnnn.mp3"
+      },
+      {
+        "name": "haha",
+        "url": "kklkl.mp3"
+      }
+    ]
+  }
+]
